@@ -1,23 +1,17 @@
 output "alb_dns_name" {
-  description = "DNS name of the Application Load Balancer"
   value       = aws_lb.main.dns_name
+  description = "The DNS name of the load balancer"
+}
+
+output "ecr_repository_url" {
+  value       = aws_ecr_repository.app.repository_url
+  description = "The URL of the ECR repository"
 }
 
 output "rds_endpoints" {
-  description = "Endpoints of the RDS instances"
   value = {
-    for tenant, instance in aws_db_instance.main : tenant => instance.endpoint
+    for tenant, instance in aws_db_instance.tenant : tenant => instance.endpoint
   }
-}
-
-output "ecs_cluster_name" {
-  description = "Name of the ECS cluster"
-  value       = aws_ecs_cluster.main.name
-}
-
-output "service_urls" {
-  description = "URLs for accessing the services"
-  value = {
-    for tenant in var.tenants : tenant.name => "https://${tenant.name}.${var.domain_name}"
-  }
+  description = "The endpoints of the RDS instances"
+  sensitive   = true
 }

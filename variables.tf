@@ -7,66 +7,50 @@ variable "aws_region" {
 variable "environment" {
   description = "Environment name"
   type        = string
-  default     = "prod"
-}
-
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
-  type        = string
-  default     = "10.0.0.0/16"
+  default     = "dev"
 }
 
 variable "app_name" {
   description = "Application name"
   type        = string
-  default     = "definitiv"
+  default     = "dotnet-sample"
 }
 
-variable "domain_name" {
-  description = "Root domain name"
+variable "vpc_cidr" {
+  description = "VPC CIDR block"
   type        = string
-  default     = "definitiv.com.au"
-}
-
-variable "new_relic_license_key" {
-  description = "New Relic license key for OTLP export"
-  type        = string
-}
-
-variable "certificate_arn" {
-  description = "ARN of the SSL certificate for HTTPS"
-  type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "tenants" {
-  description = "List of tenant configurations"
+  description = "List of tenants and their configurations"
   type = list(object({
     name           = string
-    container_port = number
-    cpu           = number
-    memory        = number
+    domain        = string
     min_capacity  = number
     max_capacity  = number
-    db_name       = string
+    cpu          = number
+    memory       = number
+    db_name      = string
   }))
   default = [
     {
-      name           = "tenant1"
-      container_port = 80
-      cpu           = 1024
-      memory        = 2048
+      name          = "tenant1"
+      domain        = "tenant1.definitiv.com.au"
       min_capacity  = 1
-      max_capacity  = 5
-      db_name       = "tenant1db"
+      max_capacity  = 4
+      cpu          = 1024
+      memory       = 2048
+      db_name      = "tenant1db"
     },
     {
-      name           = "tenant2"
-      container_port = 80
-      cpu           = 2048
-      memory        = 4096
-      min_capacity  = 2
-      max_capacity  = 10
-      db_name       = "tenant2db"
+      name          = "tenant2"
+      domain        = "definitiv.com.au"
+      min_capacity  = 1
+      max_capacity  = 4
+      cpu          = 1024
+      memory       = 2048
+      db_name      = "tenant2db"
     }
   ]
 }

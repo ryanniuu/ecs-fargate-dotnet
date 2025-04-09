@@ -12,7 +12,11 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Data source for availability zones
-data "aws_availability_zones" "available" {
-  state = "available"
-}
+# Configure the backend for state management if needed
+# terraform {
+#   backend "s3" {
+#     bucket = "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#     key    = "state/terraform.tfstate"
+#     region = "ap-southeast-2"
+#   }
+# }

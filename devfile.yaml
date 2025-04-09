@@ -1,11 +1,8 @@
 schemaVersion: 2.0.0
-metadata:
-  name: terraform-aws-infrastructure
 components:
   - name: dev
     container:
       image: public.ecr.aws/aws-mde/universal-image:latest
-      memoryLimit: 2Gi
 commands:
   - id: install
     exec:
@@ -18,4 +15,4 @@ commands:
   - id: test
     exec:
       component: dev
-      commandLine: "terraform validate && terraform fmt -check"
+      commandLine: "terraform fmt -check && terraform validate"
