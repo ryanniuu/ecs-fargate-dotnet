@@ -47,7 +47,6 @@ resource "aws_db_instance" "tenant" {
   allocated_storage   = 20
   storage_type        = "gp2"
   
-  db_name             = each.value.db_name
   username            = "admin"
   password            = "temporarypassword123!" # Change this in production
 

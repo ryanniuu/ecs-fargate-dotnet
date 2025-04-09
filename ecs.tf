@@ -145,7 +145,6 @@ resource "aws_ecs_service" "tenant" {
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = each.value.min_capacity
-  launch_type     = "FARGATE"
   platform_version = "1.4.0"
 
   capacity_provider_strategy {

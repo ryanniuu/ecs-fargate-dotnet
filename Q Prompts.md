@@ -12,8 +12,9 @@ Prompt-1
 8/ it has AWS Distro for Open Telemetry installed and configured to be able to stream the logs and metrics to New Relic
 9/ the container image should be stored in ECR
 10/ use http rather than https for now
-11/ add a git ignore file and add below items: .git .terraform .terraform.lock.hcl
-12/ add a README for the project
+11/ use AWS Secrets Manager to store sensitive data such as Database passwords
+12/ add a git ignore file and add below items: .git .terraform .terraform.lock.hcl
+13/ add a README for the project
 
 Please create this application for me with detailed deployment code, including the VPC, ECS and services, Dockerfile, ECR repo, RDS, ALB and AWS Distro for Open Telemetry, all using Terraform codes.
 
