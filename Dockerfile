@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/samples:latest
 
 # Install AWS Distro for OpenTelemetry Collector
-RUN curl -O https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/ubuntu/amd64/latest/aws-otel-collector.deb \
+RUN curl -O https://aws-otel-collector.s3.amazonaws.com/ubuntu/amd64/latest/aws-otel-collector.deb \
     && dpkg -i aws-otel-collector.deb
 
 # Copy application files

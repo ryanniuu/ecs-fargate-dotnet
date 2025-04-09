@@ -13,6 +13,7 @@ Prompt-1
 9/ the container image should be stored in ECR
 10/ use http rather than https for now
 11/ add a git ignore file and add below items: .git .terraform .terraform.lock.hcl
+12/ add a README for the project
 
 Please create this application for me with detailed deployment code, including the VPC, ECS and services, Dockerfile, ECR repo, RDS, ALB and AWS Distro for Open Telemetry, all using Terraform codes.
 
@@ -22,6 +23,9 @@ Prompt-2
 Generate devfile to build code
 
 
+### 
+manually replace AWS Distro for OpenTelemetry Collector URL in Dockerfile to 
+https://aws-otel-collector.s3.amazonaws.com/ubuntu/amd64/latest/aws-otel-collector.deb
 
 
 # Building and Pushing Container Images to ECR
@@ -35,7 +39,8 @@ aws ecr get-login-password --region <your-region> | docker login --username AWS 
 
 2. **Build the Docker image:**
 ```bash
-docker build -t <image-name> .
+## docker build -t <image-name> .
+docker buildx build --platform linux/arm64 -t your-image-name:arm64 .
 ```
 
 3. **Tag your image for ECR:**
