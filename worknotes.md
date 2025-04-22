@@ -1,3 +1,50 @@
+# build sample .NET8 application
+
+dotnet new hello-dotnet
+cd hello-dotnet
+dotnet publish --os linux --arch arm64 /t:PublishContainer
+
+https://github.com/aws-observability/aws-otel-community/blob/master/sample-apps/dotnet-sample-app/README.md
+dotnet run
+
+podman build --platform linux/arm64 -t dotnet-sample .
+podman run  -p 8080:8080 dotnet-sample
+
+aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 495677365376.dkr.ecr.ap-southeast-2.amazonaws.com
+remove ~/.docker/docker.config file
+
+docker build -t dotnet-sample .
+docker tag dotnet-sample:latest 495677365376.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-sample:latest
+docker push 495677365376.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-sample:latest
+
+podman push 495677365376.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-sample:latest
+
+aws ecs update-service --cluster dotnet-sample-dev --service dotnet-sample-dev-tenant1  --desired-count 3
+aws ecs describe-services --cluster dotnet-sample-dev --services dotnet-sample-dev-tenant1
+aws ecs update-service --cluster dotnet-sample-dev --service dotnet-sample-dev-tenant1 --force-new-deployment
+
+### Check service events
+aws ecs describe-services --cluster dotnet-sample-dev --services dotnet-sample-dev-tenant1
+### Get the failed task's details
+aws ecs list-tasks --cluster dotnet-sample-dev --service dotnet-sample-dev-tenant1 --desired-status STOPPED
+### Get detailed task information including stop reason
+aws ecs describe-tasks --cluster dotnet-sample-dev --tasks <task-id-from-above>
+### Configure Circuit Breaker and Rollback:
+aws ecs update-service --cluster dotnet-sample-dev --service dotnet-sample-dev-tenant1 \
+    --deployment-configuration \
+    "deploymentCircuitBreaker={enable=true,rollback=true}"
+### Temporarily disable circuit breaker if needed:
+aws ecs update-service \
+    --cluster dotnet-sample-dev \
+    --service dotnet-sample-dev-tenant1 \
+    --deployment-configuration \
+    "deploymentCircuitBreaker={enable=false,rollback=false}"
+### Force new deployment after fixes:
+aws ecs update-service \
+    --cluster dotnet-sample-dev \
+    --service dotnet-sample-dev-tenant1 \
+    --force-new-deployment
+
 # Q Prompts
 
 Prompt-1
@@ -15,6 +62,7 @@ Prompt-1
 11/ use AWS Secrets Manager to store sensitive data such as Database passwords
 12/ add a git ignore file and add below items: .git .terraform .terraform.lock.hcl
 13/ add a README for the project
+14/ the .net application listens on port 8080, so please set aws ecs deployments to take incoming traffic at port 80 at load balancer, and forward to ecs services and containers listening on port 8080
 
 Please create this application for me with detailed deployment code, including the VPC, ECS and services, Dockerfile, ECR repo, RDS, ALB and AWS Distro for Open Telemetry, all using Terraform codes.
 
@@ -27,6 +75,9 @@ Generate devfile to build code
 ### 
 manually replace AWS Distro for OpenTelemetry Collector URL in Dockerfile to 
 https://aws-otel-collector.s3.amazonaws.com/ubuntu/amd64/latest/aws-otel-collector.deb
+
+### dotnet sample container
+https://github.com/dotnet/dotnet-docker/blob/main/samples/dotnetapp/README.md
 
 
 # Building and Pushing Container Images to ECR
@@ -64,3 +115,12 @@ Note: Make sure you have:
 - AWS CLI installed and configured with appropriate credentials
 - Docker installed and running on your machine
 - Required permissions to push to ECR
+
+
+Outputs:
+
+alb_dns_name = "dotnet-sample-dev-199949252.ap-southeast-2.elb.amazonaws.com"
+ecr_repository_url = "495677365376.dkr.ecr.ap-southeast-2.amazonaws.com/dotnet-sample"
+rds_endpoints = <sensitive>
+
+

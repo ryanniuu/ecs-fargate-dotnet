@@ -1,0 +1,109 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/ryanniuu/Documents/AWS/git/ecs-fargate-dotnet/dotnet-sample-app/dotnet-sample-app.csproj": {}
+  },
+  "projects": {
+    "/Users/ryanniuu/Documents/AWS/git/ecs-fargate-dotnet/dotnet-sample-app/dotnet-sample-app.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/ryanniuu/Documents/AWS/git/ecs-fargate-dotnet/dotnet-sample-app/dotnet-sample-app.csproj",
+        "projectName": "dotnet-sample-app",
+        "projectPath": "/Users/ryanniuu/Documents/AWS/git/ecs-fargate-dotnet/dotnet-sample-app/dotnet-sample-app.csproj",
+        "packagesPath": "/Users/ryanniuu/.nuget/packages/",
+        "outputPath": "/Users/ryanniuu/Documents/AWS/git/ecs-fargate-dotnet/dotnet-sample-app/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/ryanniuu/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "netcoreapp8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "netcoreapp8.0",
+          "dependencies": {
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.305.11, )"
+            },
+            "OpenTelemetry.Contrib.Extensions.AWSXRay": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "OpenTelemetry.Contrib.Instrumentation.AWS": {
+              "target": "Package",
+              "version": "[1.0.2, )"
+            },
+            "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "OpenTelemetry.Instrumentation.AspNetCore": {
+              "target": "Package",
+              "version": "[1.11.1, )"
+            },
+            "OpenTelemetry.Instrumentation.Http": {
+              "target": "Package",
+              "version": "[1.11.1, )"
+            },
+            "System.Diagnostics.DiagnosticSource": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "YamlDotNet": {
+              "target": "Package",
+              "version": "[13.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Crossgen2.osx-arm64",
+              "version": "[8.0.15, 8.0.15]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.408/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

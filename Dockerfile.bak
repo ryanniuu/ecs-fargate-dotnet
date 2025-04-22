@@ -1,4 +1,9 @@
-FROM mcr.microsoft.com/dotnet/samples:latest
+FROM mcr.microsoft.com/dotnet/samples:dotnetapp
+
+# Install curl and other essential packages
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install AWS Distro for OpenTelemetry Collector
 RUN curl -O https://aws-otel-collector.s3.amazonaws.com/ubuntu/amd64/latest/aws-otel-collector.deb \

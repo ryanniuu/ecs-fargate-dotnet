@@ -33,8 +33,8 @@ resource "aws_ecs_task_definition" "app" {
       image = "${aws_ecr_repository.app.repository_url}:latest"
       portMappings = [
         {
-          containerPort = 80
-          hostPort     = 80
+          containerPort = 8080
+          hostPort     = 8080
           protocol     = "tcp"
         }
       ]
@@ -87,17 +87,18 @@ resource "aws_lb" "main" {
 }
 
 # ALB Target Groups and ECS Services for each tenant
+
 resource "aws_lb_target_group" "tenant" {
   for_each = { for tenant in var.tenants : tenant.name => tenant }
 
   name        = "${var.app_name}-${var.environment}-${each.key}"
-  port        = 80
+  port        = 8080
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    path                = "/health"
+    path                = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 10
   }
@@ -105,6 +106,10 @@ resource "aws_lb_target_group" "tenant" {
   tags = {
     Name        = "${var.app_name}-${var.environment}-${each.key}"
     Environment = var.environment
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -161,7 +166,7 @@ resource "aws_ecs_service" "tenant" {
   load_balancer {
     target_group_arn = aws_lb_target_group.tenant[each.key].arn
     container_name   = var.app_name
-    container_port   = 80
+    container_port   = 8080
   }
 
   deployment_circuit_breaker {

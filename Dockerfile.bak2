@@ -1,0 +1,37 @@
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
+ARG TARGETARCH
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
+COPY *.csproj .
+RUN dotnet restore -a $TARGETARCH
+
+# copy and publish app and libraries
+COPY . .
+RUN dotnet publish -a $TARGETARCH --no-restore -o /app
+
+# Install curl and other essential packages
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install AWS Distro for OpenTelemetry Collector
+RUN curl -O https://aws-otel-collector.s3.amazonaws.com/ubuntu/amd64/latest/aws-otel-collector.deb \
+    && dpkg -i aws-otel-collector.deb
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/runtime:8.0-jammy-chiseled
+WORKDIR /app
+COPY --from=build /app .
+
+# Configure OpenTelemetry
+ENV OTEL_RESOURCE_ATTRIBUTES=service.name=dotnet-sample
+ENV OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+ENV OTEL_TRACES_SAMPLER=always_on
+
+#ENTRYPOINT ["dotnet", "samples.dll"]
+
+ENTRYPOINT ["./dotnetapp"]
+
+
+
